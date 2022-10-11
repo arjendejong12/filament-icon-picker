@@ -6,7 +6,6 @@ namespace Guava\FilamentIconPicker\Forms;
 use BladeUI\Icons\Factory as IconFactory;
 use Closure;
 use Filament\Forms\Components\Select;
-use Guava\FilamentIconPicker\Layout;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
@@ -28,8 +27,6 @@ class IconPicker extends Select
 
     protected Closure|string|Htmlable|null $itemTemplate = null;
 
-    protected Layout $layout = Layout::FLOATING;
-
     protected bool|Closure $show;
 
     protected function setUp(): void
@@ -38,7 +35,7 @@ class IconPicker extends Select
 
         $this->sets(config('icon-picker.sets', null));
         $this->columns(config('icon-picker.columns', 1));
-        $this->layout(config('icon-picker.layout', Layout::FLOATING));
+        $this->layout(config('icon-picker.layout', 'floating'));
 
         $this->getSearchResultsUsing = function (IconPicker $component, string $search, Collection $icons) {
             return collect($icons)
@@ -108,14 +105,14 @@ class IconPicker extends Select
         ]);
     }
 
-    public function layout(Layout|Closure $layout): static
+    public function layout(string $layout): static
     {
         $this->layout = $layout;
 
         return $this;
     }
 
-    public function getLayout(): Layout
+    public function getLayout()
     {
         return $this->evaluate($this->layout);
     }
